@@ -10,7 +10,9 @@ public class PlayerController : MonoBehaviour
 
     private int desiredLane = 1; // 0:left, 1:mildde, 2:right
     public float laneDistance = 4; // iki serit arasi mesafe
-
+    
+    public float jumpForce;
+    public float Gravity = -20;
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -20,6 +22,16 @@ public class PlayerController : MonoBehaviour
     {
         direction.z = forwardSpeed;
 
+        direction.y += Gravity * Time.deltaTime;
+        if(controller.isGrounded)
+        {
+            
+            if  (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+            Jump();
+            }
+        }
+    
         if(Input.GetKeyDown(KeyCode.RightArrow))
         {
             desiredLane++;
@@ -49,5 +61,10 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         controller.Move(direction * Time.fixedDeltaTime);
+    }
+
+    private void Jump()
+    {
+        direction.y = jumpForce;
     }
 }
